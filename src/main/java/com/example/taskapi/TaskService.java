@@ -26,5 +26,14 @@ public class TaskService {
         }
         return userTasks;
     }
+public void deleteTaskByPosition(long chatId, int position){
+        List<Task> userTasks = getTasks(chatId);
+        if (position<1 || position>userTasks.size()){
+            throw new IllegalArgumentException("position can't be less then 1 or more than list of your tasks");
+        }else{
+            Task userTask = userTasks.get(position-1);
+           tasks.remove(userTask);
+        }
+}
 
 }

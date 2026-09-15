@@ -28,4 +28,11 @@ public class TaskController {
     List<Task> getUserTasks(@PathVariable long chatId) {
         return taskService.getTasks(chatId);
     }
+
+    @DeleteMapping("/tasks/{chatId}/{position}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteTask(@PathVariable long chatId, @PathVariable int position) {
+        taskService.deleteTaskByPosition(chatId, position);
+    }
+
 }
