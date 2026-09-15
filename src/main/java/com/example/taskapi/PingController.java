@@ -10,14 +10,12 @@ public class PingController {
     }
 
     @GetMapping("/hello/{chatId}/{task}")
-    Task hello(@PathVariable String task, @PathVariable long chatId){
-        return new Task(task,chatId);
+    Task hello(@PathVariable String task, @PathVariable long chatId) {
+        return new Task(task, chatId);
     }
 
-    @PostMapping("/tasks")
-    Task task(@RequestBody Task task){
-        return task;
-    }
+
 }
+
 
 
