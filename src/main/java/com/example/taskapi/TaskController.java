@@ -1,5 +1,6 @@
 package com.example.taskapi;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
+    @ResponseStatus(HttpStatus.CREATED)
     void addTask(@RequestBody Task task) {
         taskService.addTask(task);
     }
