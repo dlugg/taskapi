@@ -33,6 +33,15 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTask(@PathVariable long chatId, @PathVariable int position) {
         taskService.deleteTaskByPosition(chatId, position);
+
+
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String getExceptionText(IllegalArgumentException e) {
+        return e.getMessage();
+    }
+
 
 }
