@@ -7,20 +7,24 @@ import java.util.List;
 
 @Service
 public class TaskService {
+    private final TaskRepository taskRepository;
+    public TaskService(TaskRepository taskRepository){
+        this.taskRepository=taskRepository;
+    }
     private final List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task){
-        tasks.add(task);
+        taskRepository.save(task);
     }
 
     public List<Task> getTasks(){
-        return List.copyOf(tasks);
+        return taskRepository.findAll();
     }
 
     public List<Task> getTasks(long chatId){
         List<Task> userTasks = new ArrayList<>();
         for (Task task : tasks){
-            if (task.getChatId() == chatId){
+            if (task.getUserId() == chatId){
                 userTasks.add(task);
             }
         }

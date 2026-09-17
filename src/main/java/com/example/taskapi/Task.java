@@ -1,18 +1,42 @@
 package com.example.taskapi;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tasks")
 public class Task {
-    private final String task;
-    private final long chatId;
-    public Task(String task, long chatId){
-        this.task = task;
-        this.chatId = chatId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String taskText;
+    private long userId;
+    private boolean isDone;
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public String getTask() {
-        return task;
+    public void setTaskText(String taskText) {
+        this.taskText = taskText;
     }
 
-    public long getChatId() {
-        return chatId;
+    public Task() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public String getTaskText() {
+        return taskText;
+    }
+
+    public long getUserId() {
+        return userId;
     }
 }
