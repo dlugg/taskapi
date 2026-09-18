@@ -8,13 +8,6 @@ public class PingController {
     String ping() {
         return "pong";
     }
-
-    @GetMapping("/hello/{chatId}/{task}")
-    Task hello(@PathVariable String task, @PathVariable long chatId) {
-        return new Task(task, chatId);
-    }
-
-
 }
 
 
