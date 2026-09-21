@@ -13,10 +13,10 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/tasks")
+    @PostMapping("/tasks/{chatId}")
     @ResponseStatus(HttpStatus.CREATED)
-    void addTask(@RequestBody Task task) {
-        taskService.addTask(task);
+    void addTask(@PathVariable long chatId,@RequestBody Task task) {
+        taskService.addTask(chatId,task);
     }
 
     @GetMapping("/tasks")

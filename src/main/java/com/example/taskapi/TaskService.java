@@ -15,23 +15,29 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
+     private long findUserIdByChatId(long chatId) {
+        Optional<User> user = userRepository.findByChatId(chatId);
+        if (user.isPresent()) {
+            return user.get().getId();
+        } else {
+            throw new IllegalArgumentException("no user with this chatId found " + chatId);
+        }
+    }
 
-    public void addTask(Task task) {
+    public void addTask(long chatId, Task task) {
+        long userId = findUserIdByChatId(chatId);
+        task.setUserId(userId);
         taskRepository.save(task);
     }
+
 
     public List<Task> getTasks() {
         return taskRepository.findAll();
     }
 
     public List<Task> getTasks(long chatId) {
-        Optional<User> user = userRepository.findByChatId(chatId);
-        if (user.isPresent()) {
-            long userId = user.get().getId();
-            return taskRepository.findByUserIdOrderByIdAsc(userId);
-        } else {
-            throw new IllegalArgumentException("no user with this chatId found " + chatId);
-        }
+        long userId = findUserIdByChatId(chatId);
+        return taskRepository.findByUserIdOrderByIdAsc(userId);
     }
 
     public void deleteTaskByPosition(long chatId, int position) {
