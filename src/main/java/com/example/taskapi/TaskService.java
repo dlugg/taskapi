@@ -30,11 +30,6 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-
-    public List<Task> getTasks() {
-        return taskRepository.findAll();
-    }
-
     public List<Task> getTasks(long chatId) {
         long userId = findUserIdByChatId(chatId);
         return taskRepository.findByUserIdOrderByIdAsc(userId);

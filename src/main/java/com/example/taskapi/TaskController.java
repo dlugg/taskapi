@@ -15,13 +15,8 @@ public class TaskController {
 
     @PostMapping("/tasks/{chatId}")
     @ResponseStatus(HttpStatus.CREATED)
-    void addTask(@PathVariable long chatId,@RequestBody Task task) {
-        taskService.addTask(chatId,task);
-    }
-
-    @GetMapping("/tasks")
-    List<Task> task() {
-        return taskService.getTasks();
+    void addTask(@PathVariable long chatId, @RequestBody Task task) {
+        taskService.addTask(chatId, task);
     }
 
     @GetMapping("/tasks/{chatId}")
@@ -33,8 +28,6 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTask(@PathVariable long chatId, @PathVariable int position) {
         taskService.deleteTaskByPosition(chatId, position);
-
-
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
