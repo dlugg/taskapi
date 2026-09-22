@@ -1,6 +1,7 @@
 package com.example.taskapi;
 
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,20 +14,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 public class TaskServiceTests {
+    private final static long CHAT_ID = 123;
     @Autowired
     UserRepository userRepository;
     @Autowired
     TaskService taskService;
 
+    @BeforeEach
+    void createUser() {
+        User user = new User(CHAT_ID, "Andrzej");
+        userRepository.save(user);
+    }
+
     @Test
     void addTaskSavesTask() {
-        long chatId = 123;
-        User user = new User(chatId, "Andrzej");
-        userRepository.save(user);
         Task task = new Task();
         task.setTaskText("buy bread");
-        taskService.addTask(chatId, task);
-        List<Task> userTask = taskService.getTasks(chatId);
+        taskService.addTask(CHAT_ID, task);
+        List<Task> userTask = taskService.getTasks(CHAT_ID);
         assertEquals("buy bread", userTask.getLast().getTaskText());
     }
 
@@ -37,29 +42,40 @@ public class TaskServiceTests {
 
     @Test
     void deleteMiddleTaskKeepsOtherTasks() {
-        long chatId = 123;
-        User user = new User(chatId, "Andrzej");
-        userRepository.save(user);
-
         Task taskOne = new Task();
         taskOne.setTaskText("a");
-        taskService.addTask(chatId, taskOne);
+        taskService.addTask(CHAT_ID, taskOne);
 
         Task taskTwo = new Task();
         taskTwo.setTaskText("b");
-        taskService.addTask(chatId, taskTwo);
+        taskService.addTask(CHAT_ID, taskTwo);
 
         Task taskThree = new Task();
         taskThree.setTaskText("c");
-        taskService.addTask(chatId, taskThree);
+        taskService.addTask(CHAT_ID, taskThree);
 
-        taskService.deleteTaskByPosition(chatId, 2);
-        List<Task> userTasks = taskService.getTasks(chatId);
+        taskService.deleteTaskByPosition(CHAT_ID, 2);
+        List<Task> userTasks = taskService.getTasks(CHAT_ID);
         assertEquals(2, userTasks.size());
         assertEquals("a", userTasks.getFirst().getTaskText());
         assertEquals("c", userTasks.getLast().getTaskText());
+    }
 
+    @Test
+    void deleteTaskAtInvalidPositionThrows() {
+        Task taskOne = new Task();
+        taskOne.setTaskText("a");
+        taskService.addTask(CHAT_ID, taskOne);
 
+        Task taskTwo = new Task();
+        taskTwo.setTaskText("b");
+        taskService.addTask(CHAT_ID, taskTwo);
+
+        Task taskThree = new Task();
+        taskThree.setTaskText("c");
+        taskService.addTask(CHAT_ID, taskThree);
+        assertThrows(IllegalArgumentException.class, () -> taskService.deleteTaskByPosition(CHAT_ID, 0));
+        assertThrows(IllegalArgumentException.class, () -> taskService.deleteTaskByPosition(CHAT_ID, 4));
     }
 }
 
