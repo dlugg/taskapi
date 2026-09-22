@@ -15,6 +15,12 @@ public class User {
 
     }
 
+    public User(long chatId, String name) {
+        this.chatId = chatId;
+        this.name = name;
+
+    }
+
     public Long getId() {
         return id;
     }
