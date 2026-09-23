@@ -9,7 +9,10 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -21,6 +24,8 @@ public class TaskControllerTests {
     MockMvc mockMvc;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TaskService taskService;
 
     @BeforeEach
     void createUser() {
@@ -37,10 +42,26 @@ public class TaskControllerTests {
     }
 
     @Test
-    void postTaskForUnknownChatIdReturnsBadRequest()throws Exception{
+    void postTaskForUnknownChatIdReturnsBadRequest() throws Exception {
         mockMvc.perform(post("/tasks/999")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"taskText\":\"buy bread\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"taskText\":\"buy bread\"}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getTasksReturnTasksInOrder() throws Exception {
+        Task taskOne = new Task();
+        taskOne.setTaskText("a");
+        taskService.addTask(CHAT_ID, taskOne);
+
+        Task taskTwo = new Task();
+        taskTwo.setTaskText("b");
+        taskService.addTask(CHAT_ID, taskTwo);
+
+        mockMvc.perform(get("/tasks/{chatId}", CHAT_ID))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].taskText").value("a"))
+                .andExpect(jsonPath("$[1].taskText").value("b"));
     }
 }
