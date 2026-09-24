@@ -36,5 +36,10 @@ public class TaskController {
         return e.getMessage();
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String getExceptionText(UserNotFoundException e) {
+        return e.getMessage();
+    }
 
 }

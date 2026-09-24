@@ -20,7 +20,7 @@ public class TaskService {
         if (user.isPresent()) {
             return user.get().getId();
         } else {
-            throw new IllegalArgumentException("no user with this chatId found " + chatId);
+            throw new UserNotFoundException("no user with this chatId found " + chatId);
         }
     }
 

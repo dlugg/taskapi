@@ -41,11 +41,11 @@ public class TaskControllerTests {
     }
 
     @Test
-    void postTaskForUnknownChatIdReturnsBadRequest() throws Exception {
+    void postTaskForUnknownChatIdReturnsNotFound() throws Exception {
         mockMvc.perform(post("/tasks/999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"taskText\":\"buy bread\"}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test

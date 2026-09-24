@@ -37,7 +37,7 @@ public class TaskServiceTests {
 
     @Test
     void getTaskWithNonExistingChatIdThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> taskService.getTasks(999));
+        assertThrows(UserNotFoundException.class, () -> taskService.getTasks(999));
     }
 
     @Test

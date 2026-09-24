@@ -23,8 +23,8 @@ Users are identified by their Telegram chat ID. The service resolves it to the i
 | `DELETE` | `/tasks/{chatId}/{position}` | deletes the task at a 1-based position in that list, returns `204 No Content` |
 | `GET` | `/ping` | returns `pong`, a quick check that the app is up |
 
-An unknown chat ID or a position outside the list returns `400 Bad Request` with an error message.
-
+An unknown chat ID returns `404 Not Found` with an error message. \
+A position outside the list returns `400 Bad request` with an error message.
 ```bash
 curl -i -X POST http://localhost:8080/tasks/12345 \
   -H "Content-Type: application/json" \
@@ -58,5 +58,4 @@ Tests use a separate database `javabot_test` with the same schema, configured in
 
 ## Next steps
 
-- Return `404 Not Found` for an unknown user and keep `400` for invalid input.
 - Move error handling out of the controller into `@RestControllerAdvice`.
