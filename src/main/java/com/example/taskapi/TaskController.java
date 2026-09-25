@@ -29,17 +29,4 @@ public class TaskController {
     void deleteTask(@PathVariable long chatId, @PathVariable int position) {
         taskService.deleteTaskByPosition(chatId, position);
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String getExceptionText(IllegalArgumentException e) {
-        return e.getMessage();
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String getExceptionText(UserNotFoundException e) {
-        return e.getMessage();
-    }
-
 }
